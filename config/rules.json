@@ -1,0 +1,22 @@
+{
+  "suspicion_iou_threshold": 0.08,
+  "suspicion_distance_ratio": 0.16,
+  "suspicion_consecutive_frames": 3,
+  "verifier_window_seconds": 3,
+  "verifier_min_positive_frames": 2,
+  "verifier_min_confidence": 0.55,
+  "uncertain_after_seconds": 3,
+  "accident_verification_timeout_seconds": 3.0,
+  "evidence_pre_seconds": 5,
+  "evidence_post_seconds": 5,
+  "max_events_per_source": 1000,
+  "upload_max_mb": 1024,
+  "verifier_sample_interval_seconds": 0.5,
+  "trajectory_min_displacement_ratio": 0.025,
+  "trajectory_turn_threshold_degrees": 75,
+  "candidate_observation_seconds": 0.6,
+  "candidate_min_observations": 3,
+  "candidate_max_age_seconds": 2.0,
+  "candidate_max_track_gap_seconds": 0.75,
+  "diagnostics_enabled": false
+}

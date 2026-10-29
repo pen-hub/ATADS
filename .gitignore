@@ -1,0 +1,33 @@
+.venv/
+__pycache__/
+*.py[cod]
+data/uploads/*
+data/events/*
+data/evidence/images/*
+data/evidence/videos/*
+data/exports/*
+data/logs/*
+data/cache/*
+config/roi.json
+!data/**/.gitkeep
+
+# Local secrets and generated artifacts
+.env
+.env.*
+!.env.example
+dataset/
+report_work/
+docs/qa_chuong1/
+.pytest_cache/
+
+# Keep the two runtime checkpoints, exclude other training outputs
+runs/**
+!runs/detect/
+!runs/detect/phuong_tien/
+!runs/detect/phuong_tien/huan_luyen/
+!runs/detect/phuong_tien/huan_luyen/weights/
+!runs/detect/phuong_tien/huan_luyen/weights/best.pt
+!runs/detect/yolo_v11_small_accident/
+!runs/detect/yolo_v11_small_accident/huan_luyen/
+!runs/detect/yolo_v11_small_accident/huan_luyen/weights/
+!runs/detect/yolo_v11_small_accident/huan_luyen/weights/best.pt

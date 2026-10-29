@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101820"><title>ATADS · Trung tâm giám sát giao thông</title>
+  <link rel="stylesheet" href="/css/app.css?v=roi-layout-20261023">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">A<span>+</span></div><div><b>ATADS</b><small>TRAFFIC SAFETY SYSTEM</small></div></div>
+    <div class="site"><span class="pulse"></span><div><small>TRẠM GIÁM SÁT</small><b>LOCAL · MÁY NÀY</b></div><span class="chevron">⌄</span></div>
+    <nav aria-label="Điều hướng chính">
+      <button class="nav active" data-page="overview"><span>▦</span>Tổng quan</button>
+      <button class="nav" data-page="monitor"><span>◉</span>Giám sát video</button>
+      <button class="nav" data-page="events"><span>⚑</span>Trung tâm cảnh báo <i id="nav-alert-count">0</i></button>
+      <button class="nav" data-page="history"><span>◷</span>Lịch sử sự kiện</button>
+      <div class="nav-label">HỆ THỐNG</div>
+      <button class="nav" data-page="reports"><span>▤</span>Báo cáo</button>
+      <button class="nav" data-page="system"><span>⌘</span>Thông số hệ thống</button>
+      <button class="nav" data-page="settings"><span>⚙</span>Cấu hình</button>
+      <button class="nav" data-page="logs"><span>≡</span>Nhật ký vận hành</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="connection"><span class="pulse"></span><div><b id="sidebar-backend">Đang kết nối…</b><small>Backend chạy cục bộ</small></div></div><div class="version">ATADS <span>v1.0.0 · LOCAL</span></div></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div class="breadcrumb">TRUNG TÂM ĐIỀU HÀNH <span>/</span> <b id="breadcrumb-page">TỔNG QUAN</b></div><h1 id="page-title">Tổng quan hệ thống</h1></div><div class="top-actions"><span class="local-badge">⌖ &nbsp;ĐANG CHẠY CỤC BỘ</span><time id="clock"></time><span class="avatar">AT</span></div></header>
+    <section id="page-overview" class="page">
+      <div class="intro"><div><h2>Xin chào, Điều hành viên</h2><p>Theo dõi trạng thái phát hiện và các luồng giám sát đang hoạt động.</p></div><button class="button primary" data-go="monitor">＋ &nbsp; Thêm nguồn video</button></div>
+      <div class="metric-grid">
+        <article class="metric"><div class="metric-heading">BACKEND <span class="metric-icon blue">⌘</span></div><div class="metric-value" id="ov-backend">—</div><div class="metric-sub" id="ov-uptime">Đang kiểm tra</div><div class="status-line"><span class="pulse"></span>API và pipeline</div></article>
+        <article class="metric"><div class="metric-heading">MODEL AI <span class="metric-icon violet">◈</span></div><div class="metric-value" id="ov-models">—</div><div class="metric-sub" id="ov-device">Đang kiểm tra</div><div class="status-line"><span class="pulse"></span>Hai mô hình đã huấn luyện</div></article>
+        <article class="metric"><div class="metric-heading">PHƯƠNG TIỆN THEO DÕI <span class="metric-icon cyan">⌖</span></div><div class="metric-value" id="ov-tracks">0</div><div class="metric-sub">Track ID trong khung hình mới nhất</div><div class="status-line neutral" id="ov-source">Chưa có nguồn hoạt động</div></article>
+        <article class="metric"><div class="metric-heading">SỰ KIỆN CẦN DUYỆT <span class="metric-icon amber">⚑</span></div><div class="metric-value" id="ov-pending">0</div><div class="metric-sub" id="ov-total-events">0 sự kiện đã lưu cục bộ</div><div class="status-line warn">SUSPECTED · UNCERTAIN</div></article>
+      </div>
+      <div class="grid-two"><section class="panel monitor-panel"><div class="panel-title"><div><h3>Giám sát trực tiếp</h3><p>Khung hình mới nhất từ pipeline thực tế</p></div><button class="text-button" data-go="monitor">Mở màn hình ↗</button></div><div class="preview" id="overview-preview"><div class="preview-empty"><div class="play-icon">▶</div><b>Chưa có nguồn video</b><span>Tải video hoặc kết nối camera để bắt đầu phân tích.</span><button class="button outline" data-go="monitor">Chọn nguồn</button></div></div><div class="preview-foot"><span id="ov-frame-state"><i class="small-dot"></i>Pipeline dừng</span><span id="ov-fps">FPS —</span></div></section>
+      <section class="panel"><div class="panel-title"><div><h3>Cảnh báo gần đây</h3><p>Sự kiện được lưu trên máy tính này</p></div><button class="text-button" data-go="events">Tất cả ↗</button></div><div id="overview-events" class="event-list"><div class="empty-state">Chưa ghi nhận sự kiện.</div></div></section></div>
+      <div class="panel model-row"><div class="model-summary"><div class="model-symbol">◈</div><div><b>TRẠNG THÁI MÔ HÌNH</b><small id="model-paths">Đang đọc checkpoint…</small></div></div><div class="model-chip"><span class="pulse"></span><span><b>Mô hình phương tiện</b><small id="vehicle-classes">Chưa tải</small></span></div><div class="model-chip"><span class="pulse"></span><span><b>Mô hình tai nạn</b><small id="accident-classes">Chưa tải</small></span></div><div class="model-device" id="gpu-summary">GPU —</div></div>
+      <section class="panel frequency-panel"><div class="panel-title"><div><h3>Tần suất phương tiện trong video</h3><p>Số detection trên mỗi khoảng 10 giây video</p></div><select id="frequency-window"><option value="10">10 giây</option><option value="30">30 giây</option></select></div><div id="frequency-chart" class="frequency-chart"><div class="empty-state">Bắt đầu video để ghi nhận tần suất.</div></div></section>
+      <div class="footnote">AI hỗ trợ sàng lọc và không thay thế việc xác minh của người vận hành.</div>
+    </section>
+    <section id="page-monitor" class="page hidden"><div class="monitor-layout"><div class="panel video-panel"><div class="panel-title"><div><h3>Màn hình giám sát</h3><p id="monitor-subtitle">Chọn video hoặc kết nối camera để bắt đầu.</p></div><span id="pipeline-pill" class="pill">● ĐÃ DỪNG</span></div><div class="video-stage" id="monitor-stage"><div id="monitor-placeholder" class="preview-empty"><div class="play-icon">▶</div><b>Chưa có nguồn video</b><span>Video/camera được xử lý trên máy chạy backend.</span><label class="button outline" for="video-file">Chọn video</label></div><img id="monitor-frame" alt="Khung hình video" class="hidden"><canvas id="roi-canvas" aria-label="Lớp vẽ ROI"></canvas></div><div class="controls"><button class="button primary" id="start-btn" disabled>▶ &nbsp; Bắt đầu</button><button class="button outline" id="pause-btn" disabled>Ⅱ &nbsp; Tạm dừng</button><button class="button outline" id="stop-btn" disabled>■ &nbsp; Dừng</button><label class="button outline file-pick" for="video-file">＋ &nbsp; Tải video</label><label class="speed-label">Nguồn <select id="source-mode"><option value="video">Video tải lên</option><option value="webcam">Webcam USB</option><option value="ip-camera">Camera IP (RTSP/HTTP)</option></select></label><label id="webcam-source-wrap" class="speed-label hidden">Thiết bị <select id="webcam-index"><option value="1" selected>Webcam 1 (đã dò thấy)</option><option value="0">Webcam 0</option><option value="2">Webcam 2</option></select></label><label id="ip-camera-source-wrap" class="camera-url-wrap hidden">URL camera<input id="camera-url" type="text" placeholder="rtsp://user:password@192.168.1.10:554/stream"></label><input id="video-file" type="file" accept="video/mp4,video/avi,video/quicktime,.mkv,.m4v" hidden><span class="selected-file" id="selected-file">Chưa chọn file</span></div><div class="roi-toolbar"><button class="button outline" id="roi-draw">✎ Vẽ vùng ROI</button><button class="button outline" id="roi-undo" disabled>↶ Bỏ điểm</button><button class="button outline" id="roi-finish" disabled>✓ Hoàn tất</button><button class="button outline" id="roi-cancel" disabled>Hủy vẽ</button><label class="roi-toggle"><input id="roi-enabled" type="checkbox" disabled> Áp dụng vùng</label><select id="roi-anchor" aria-label="Điểm xét ROI"><option value="bottom_center">Chân xe</option><option value="center">Tâm khung xe</option></select><button class="button primary" id="roi-save" disabled>Lưu ROI</button><button class="button outline" id="roi-clear" disabled>Xóa</button><span id="roi-hint">Chọn video, bấm “Vẽ vùng ROI”, rồi bấm các điểm quanh khu vực cần theo dõi.</span></div><div class="trajectory-toolbar"><label><input id="trajectory-toggle" type="checkbox"> Quỹ đạo</label><label><input id="track-id-toggle" type="checkbox"> ID</label><label><input id="direction-toggle" type="checkbox"> Hướng</label><label> Lịch sử <select id="trajectory-history"><option value="3">3 giây</option><option value="6">6 giây</option><option value="12">12 giây</select></label><label> Tập trung <select id="track-focus"><option value="all">Tất cả track</option></select></label><button class="button outline" id="clear-trajectories">Xóa quỹ đạo</button><span class="trajectory-legend">Đường liền: vị trí quan sát · màu cố định theo ID · mũi tên: hướng ảnh</span></div><div class="live-stats"><span><small>FPS xử lý</small><b id="live-fps">—</b></span><span><small>Độ trễ</small><b id="live-latency">—</b></span><span><small>Đang theo dõi</small><b id="live-tracks">0</b></span><span><small>Frame</small><b id="live-frame">—</b></span></div></div>
+      <aside class="panel monitor-side">
+        <div class="panel-title">
+          <div>
+            <h3>Phân tích thời gian thực</h3>
+            <p>Detection và ByteTrack</p>
+          </div>
+          <span class="pill" style="font-size:9px;padding:3px 8px;">RADAR</span>
+        </div>
+        <div id="track-list" class="track-list">
+          <div class="empty-state">Chưa có detection.</div>
+        </div>
+        <div id="verify-card" class="verify-card normal">
+          <div class="verify-heading">
+            <span id="verify-icon">⚑</span>
+            <b>Xác minh tai nạn</b>
+            <span id="verify-badge" class="verify-badge hidden"></span>
+          </div>
+          <div id="verify-status" class="verify-status">BÌNH THƯỜNG · Chưa có dấu hiệu</div>
+          <div id="verify-confidence" class="verify-confidence hidden"></div>
+          <div id="verify-detail" class="verify-detail">Khi bộ phân tích ghi nhận dấu hiệu đáng ngờ, mô hình thứ hai sẽ được gọi để xác minh theo thời gian.</div>
+          <button class="verify-action" data-go="events">
+            <span>Mở trung tâm cảnh báo</span>
+            <span aria-hidden="true" class="arrow-icon">→</span>
+          </button>
+        </div>
+        <section class="signal-simulator">
+          <div class="signal-head">
+            <div class="signal-title-wrap">
+              <span>🚦</span>
+              <b>Đèn giao thông mô phỏng</b>
+            </div>
+            <span id="signal-mode-label" class="signal-badge">TỰ ĐỘNG</span>
+          </div>
+          <div class="signal-control-group">
+            <label class="signal-mode" for="signal-mode">
+              <span>Chế độ điều khiển</span>
+              <select id="signal-mode">
+                <option value="auto">Tự động (theo cảnh báo)</option>
+                <option value="manual">Thủ công (ghi đè)</option>
+              </select>
+            </label>
+            <label id="signal-manual-wrap" class="signal-mode hidden" for="signal-manual">
+              <span>Đèn thủ công</span>
+              <select id="signal-manual">
+                <option value="GREEN">Xanh · An toàn</option>
+                <option value="YELLOW">Vàng · Cảnh báo</option>
+                <option value="RED">Đỏ · Sự cố dừng xe</option>
+              </select>
+            </label>
+          </div>
+          <div class="signal-housing">
+            <div class="signal-lamps">
+              <div class="lamp-unit"><i id="signal-red" title="Đèn đỏ"></i><span class="lamp-label">ĐỎ</span></div>
+              <div class="lamp-unit"><i id="signal-yellow" title="Đèn vàng"></i><span class="lamp-label">VÀNG</span></div>
+              <div class="lamp-unit"><i id="signal-green" title="Đèn xanh"></i><span class="lamp-label">XANH</span></div>
+            </div>
+          </div>
+          <div id="signal-caption" class="signal-caption">Xanh · không có sự kiện cần duyệt</div>
+          <div class="sound-toggle-bar">
+            <label class="sound-toggle" for="alert-sound-toggle">
+              <span class="sound-toggle-text"><span>🔔</span> Âm thanh cảnh báo</span>
+              <input id="alert-sound-toggle" type="checkbox">
+            </label>
+          </div>
+        </section>
+        <div class="note-card">
+          <span>ⓘ</span>
+          <div>Chuyển động trong ảnh không được quy đổi thành tốc độ vật lý khi chưa hiệu chuẩn camera.</div>
+        </div>
+      </aside></div></section>
+    <section id="page-events" class="page hidden"><div class="intro"><div><h2>Trung tâm cảnh báo</h2><p>Xem lại bằng chứng và quyết định trạng thái từng sự kiện.</p></div><button class="button outline" id="refresh-events">↻ &nbsp; Làm mới</button></div><div class="filter-row"><input id="event-search" type="search" placeholder="Tìm event ID…"><select id="event-status-filter"><option value="">Tất cả trạng thái</option><option>SUSPECTED</option><option>CONFIRMED</option><option>UNCERTAIN</option><option>REJECTED</option></select><button class="button outline" data-export="csv">⇩ CSV</button></div><div id="alerts-list" class="alerts-list"><div class="empty-state">Đang tải sự kiện…</div></div><div id="events-pagination" class="pagination"></div></section>
+    <section id="page-history" class="page hidden"><div class="intro"><div><h2>Lịch sử sự kiện</h2><p>Các bản ghi và bằng chứng lưu trực tiếp trên ổ đĩa này.</p></div><button class="button outline" data-export="json">⇩ Xuất JSON</button></div><div class="filter-row"><input id="history-search" type="search" placeholder="Tìm mã sự kiện…"><select id="history-status-filter"><option value="">Mọi trạng thái</option><option>SUSPECTED</option><option>CONFIRMED</option><option>UNCERTAIN</option><option>REJECTED</option></select><input id="history-source" placeholder="Nguồn video"></div><div class="table-wrap"><table><thead><tr><th>MÃ SỰ KIỆN</th><th>THỜI GIAN</th><th>NGUỒN</th><th>TRẠNG THÁI</th><th>CONFIDENCE AI</th><th></th></tr></thead><tbody id="history-body"><tr><td colspan="6" class="empty-state">Đang tải…</td></tr></tbody></table></div><div id="history-pagination" class="pagination"></div></section>
+    <section id="page-reports" class="page hidden"><div class="intro"><div><h2>Báo cáo vận hành</h2><p>Thống kê các bản ghi cục bộ, không đại diện độ chính xác mô hình.</p></div><button class="button outline" data-export="csv">⇩ Xuất CSV</button></div><div class="metric-grid three"><article class="metric"><div class="metric-heading">TỔNG SỰ KIỆN</div><div class="metric-value" id="report-total">—</div><div class="metric-sub">Bản ghi đã lưu</div></article><article class="metric"><div class="metric-heading">NGƯỜI DÙNG XÁC NHẬN</div><div class="metric-value" id="report-confirmed">—</div><div class="metric-sub">CONFIRMED</div></article><article class="metric"><div class="metric-heading">BỊ BÁC BỎ</div><div class="metric-value" id="report-rejected">—</div><div class="metric-sub">REJECTED</div></article></div><div class="panel"><div class="panel-title"><div><h3>Sự kiện theo ngày và trạng thái</h3><p id="report-disclaimer">Chưa đối chiếu ground truth.</p></div></div><div id="report-days" class="report-days"></div></div></section>
+    <section id="page-system" class="page hidden"><div class="intro"><div><h2>Thông số hệ thống</h2><p>Các chỉ số đọc từ backend và phần cứng khả dụng.</p></div><button class="button outline" id="refresh-status">↻ &nbsp; Làm mới</button></div><div class="metric-grid three"><article class="metric"><div class="metric-heading">CPU</div><div class="metric-value" id="sys-cpu">N/A</div><div class="metric-sub">Mức sử dụng</div></article><article class="metric"><div class="metric-heading">BỘ NHỚ RAM</div><div class="metric-value" id="sys-ram">N/A</div><div class="metric-sub">Mức sử dụng</div></article><article class="metric"><div class="metric-heading">GPU / VRAM</div><div class="metric-value small-value" id="sys-gpu">N/A</div><div class="metric-sub" id="sys-vram">N/A</div></article><article class="metric"><div class="metric-heading">FPS VIDEO NGUỒN</div><div class="metric-value" id="sys-sourcefps">N/A</div><div class="metric-sub">Theo metadata video</div></article><article class="metric"><div class="metric-heading">FPS XỬ LÝ</div><div class="metric-value" id="sys-procfps">N/A</div><div class="metric-sub">Pipeline</div></article><article class="metric"><div class="metric-heading">ĐỘ TRỄ</div><div class="metric-value" id="sys-latency">N/A</div><div class="metric-sub">ms / frame</div></article><article class="metric"><div class="metric-heading">MODEL PHƯƠNG TIỆN</div><div class="metric-value small-value" id="sys-vehicle-ms">N/A</div><div class="metric-sub">ms / inference</div></article><article class="metric"><div class="metric-heading">MODEL TAI NẠN</div><div class="metric-value small-value" id="sys-accident-ms">N/A</div><div class="metric-sub">ms / inference</div></article><article class="metric"><div class="metric-heading">QUEUE / FRAME BỎ</div><div class="metric-value small-value" id="sys-queue">N/A</div><div class="metric-sub" id="sys-dropped">Xác minh đang chờ / loại bỏ</div></article></div><div class="panel"><div class="panel-title"><div><h3>Trạng thái pipeline</h3><p id="system-state">—</p></div><span id="system-error" class="error-text"></span></div></div></section>
+    <section id="page-settings" class="page hidden"><div class="intro"><div><h2>Cấu hình cục bộ</h2><p>Giá trị được lưu trong config/settings.json và config/rules.json. Dừng video/camera trước khi lưu và áp dụng.</p></div><div class="config-actions"><button class="button outline" id="restore-default-settings">Khôi phục mặc định</button><button class="button primary" id="save-settings">Lưu cấu hình</button></div></div><div class="settings-grid"><div class="panel form-panel"><h3>Hai mô hình YOLO</h3><label>Đường dẫn model phương tiện<input id="cfg-vehicle-model"></label><label>Đường dẫn model tai nạn<input id="cfg-accident-model"></label><div class="form-two"><label>Confidence phương tiện<input id="cfg-vehicle-conf" type="number" min="0.01" max="1" step="0.01"></label><label>Confidence tai nạn<input id="cfg-accident-conf" type="number" min="0.01" max="1" step="0.01"></label></div><div class="form-two"><label>imgsz phương tiện<input id="cfg-vehicle-size" type="number" min="32" step="32"></label><label>imgsz tai nạn<input id="cfg-accident-size" type="number" min="32" step="32"></label></div><label>Thiết bị (0, cuda:0 hoặc cpu)<input id="cfg-device"></label><p class="form-note">Dùng cpu là lựa chọn chẩn đoán thủ công; ứng dụng sẽ không tự chuyển thiết bị. Dừng pipeline trước khi thay model hoặc device.</p></div><div class="panel form-panel"><h3>Lịch và luật xác minh</h3><div class="form-two"><label>Chu kỳ gọi model accident (giây)<input id="cfg-interval" type="number" min="0.1" max="10" step="0.1"></label><label>Queue xác minh tối đa<input id="cfg-queue" type="number" min="1" max="32"></label></div><div class="form-two"><label>Ngưỡng IoU hỗ trợ khi hai track tiến gần (không tự tạo nghi vấn)<input id="cfg-iou" type="number" min="0" max="1" step="0.01"></label><label>Ngưỡng khoảng cách trên ảnh<input id="cfg-distance" type="number" min="0" max="1" step="0.01"></label></div><div class="form-two"><label>Số frame tương tác liên tiếp<input id="cfg-consecutive" type="number" min="1"></label><label>Số mẫu accident làm tín hiệu cho người duyệt<input id="cfg-positive" type="number" min="1"></label></div><div class="form-two"><label>Confidence accident hỗ trợ duyệt<input id="cfg-verify-conf" type="number" min="0" max="1" step="0.01"></label><label>Cửa sổ xác minh (giây)<input id="cfg-window" type="number" min="0.2" step="0.1"></label></div><div class="form-two"><label>Khoảng lấy mẫu model accident (giây)<input id="cfg-sample" type="number" min="0.1" max="5" step="0.1"></label><label>Ngưỡng đổi hướng quỹ đạo (độ)<input id="cfg-trajectory-turn" type="number" min="1" max="179"></label></div><div class="form-two"><label>Độ dài quỹ đạo lưu (giây)<input id="cfg-trajectory-history" type="number" min="1" max="30" step="1"></label><label>Giữ track mất detection (giây)<input id="cfg-trajectory-gap" type="number" min="0.1" max="5" step="0.05"></label></div><div class="form-two"><label>Số điểm tối đa mỗi quỹ đạo<input id="cfg-trajectory-points" type="number" min="2" max="1000"></label><label>Dịch chuyển tối thiểu tính hướng (pixel)<input id="cfg-direction-pixels" type="number" min="0" max="500" step="1"></label></div><div class="form-two"><label>Dịch chuyển bất thường tối thiểu (tỷ lệ ảnh)<input id="cfg-trajectory-min" type="number" min="0" max="1" step="0.005"></label><label>Thời gian chuyển UNCERTAIN<input id="cfg-uncertain" type="number" min="0.2" step="0.1"></label><label>Giới hạn upload (MB)<input id="cfg-upload" type="number" min="1"></label></div><p class="form-note">Các tín hiệu chỉ tạo SUSPECTED hoặc UNCERTAIN. Chỉ người dùng mới xác nhận hoặc bác bỏ; confidence chưa được hiệu chuẩn bằng tập validation.</p></div></div></section>
+    <section id="page-logs" class="page hidden"><div class="intro"><div><h2>Nhật ký vận hành</h2><p>Log backend có timestamp, mức độ và module phát sinh.</p></div><button class="button outline" id="refresh-logs">↻ &nbsp; Làm mới</button></div><div class="filter-row"><input id="log-search" placeholder="Tìm trong nhật ký…"></div><pre id="log-output" class="log-output">Đang tải…</pre></section>
+    <footer>ATADS · HỆ THỐNG PHÁT HIỆN TAI NẠN GIAO THÔNG TỰ ĐỘNG <span>LOCAL · DỮ LIỆU KHÔNG RỜI KHỎI MÁY NÀY</span></footer>
+  </main>
+  <div id="toast" role="status" class="toast hidden"></div>
+  <dialog id="event-dialog" class="event-dialog"><form method="dialog"><button class="dialog-close" aria-label="Đóng">×</button></form><div id="event-detail"></div></dialog>
+  <script src="/js/app.js?v=roi-layout-20261023" defer></script>
+</body></html>

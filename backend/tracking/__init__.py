@@ -1,0 +1,1 @@
+"""Ultralytics ByteTrack adapter."""

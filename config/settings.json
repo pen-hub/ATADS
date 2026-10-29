@@ -1,0 +1,18 @@
+{
+  "vehicle_model": "E:/Dung/cv/runs/detect/phuong_tien/huan_luyen/weights/best.pt",
+  "accident_model": "E:/Dung/cv/runs/detect/yolo_v11_small_accident/huan_luyen/weights/best.pt",
+  "device": "0",
+  "vehicle_confidence": 0.5,
+  "accident_confidence": 0.45,
+  "vehicle_imgsz": 640,
+  "accident_imgsz": 640,
+  "verification_interval_frames": 5,
+  "verification_interval_seconds": 0.5,
+  "verification_queue_size": 3,
+  "data_dir": "data",
+  "port": 8765,
+  "trajectory_history_seconds": 6,
+  "trajectory_max_gap_seconds": 0.75,
+  "trajectory_max_points": 96,
+  "trajectory_min_direction_pixels": 8
+}

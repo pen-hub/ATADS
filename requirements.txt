@@ -1,0 +1,8 @@
+# Runtime dependencies already present in the inspected .venv.
+# PyTorch/CUDA wheels are hardware/driver specific; see README before installing.
+fastapi==0.143.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.20
+ultralytics==8.4.160
+opencv-python==5.0.0.0
+psutil==7.0.0
